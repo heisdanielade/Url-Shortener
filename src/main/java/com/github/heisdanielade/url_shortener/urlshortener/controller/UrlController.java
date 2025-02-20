@@ -13,15 +13,25 @@ public class UrlController {
     @Autowired
     private UrlService urlService;
 
-    @PostMapping(path="/shorten")
-    public ResponseEntity<String> shortenUrl(@RequestBody String originalUrl ){
-        String shortUrl = urlService.shortenUrl(originalUrl);
-        return ResponseEntity.ok(shortUrl);
+    @PostMapping("/shorten")
+    public ResponseEntity<String> shortenUrl(@RequestBody String originalUrl) {
+        try {
+            String shortUrl = urlService.shortenUrl(originalUrl);
+            return ResponseEntity.ok(shortUrl);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
 
     @GetMapping("/{shortUrl}")
-    public ResponseEntity<String> getOriginalUrl(@PathVariable String shortUrl){
-        String originalUrl = urlService.getOriginalUrl(shortUrl);
-        return originalUrl != null ? ResponseEntity.ok(originalUrl) : ResponseEntity.notFound().build();
+    public ResponseEntity<String> getOriginalUrl(@PathVariable String shortUrl) {
+        try {
+            String originalUrl = urlService.getOriginalUrl(shortUrl);
+            return originalUrl != null ? ResponseEntity.ok(originalUrl) : ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
 }
