@@ -1,0 +1,7 @@
+spring:
+  application:
+  name: UrlShortener
+
+
+server:
+  port: 6060
