@@ -27,6 +27,7 @@ public class UrlService {
             shortUrl = RandomStringUtils.randomAlphanumeric(8);
         } while (urlRepository.findByShortUrl(shortUrl) != null);
 
+        // save url details to DB
         Url url = new Url();
         url.setOriginalUrl(originalUrl);
         url.setShortUrl(shortUrl);
@@ -34,6 +35,7 @@ public class UrlService {
 
         return shortUrl;
     }
+
 
     public String getOriginalUrl(String shortUrl){
         Url url = urlRepository.findByShortUrl(shortUrl);
